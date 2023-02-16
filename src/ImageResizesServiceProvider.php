@@ -13,6 +13,8 @@ class ImageResizesServiceProvider extends ServiceProvider
 
     public function boot()
     {
+            // define the routes for the application
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         try {
             foreach (glob(__DIR__ . '/Helpers/*.php') as $filename) {
                 require_once $filename;
