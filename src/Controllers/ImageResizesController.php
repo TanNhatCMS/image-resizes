@@ -9,7 +9,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 use Ophim\Core\Models\Movie;
 
-class ImageController 
+class ImageResizesController 
 {
     //
 
