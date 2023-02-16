@@ -1,0 +1,28 @@
+{
+    "name": "tannhatcms/image-resizes",
+    "description": "image-resizes",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Tan Nhat CMS"
+        }
+    ],
+    "require": {
+        "laravel/framework": "^8|^9",
+        "ckfinder/ckfinder-laravel-package": "v3.5.2.1"  
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Tannhatcms\\ImageResizes\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tannhatcms\\ImageResizes\\ImageResizesServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable"
+}
