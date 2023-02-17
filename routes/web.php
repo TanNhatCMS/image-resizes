@@ -12,10 +12,12 @@ Route::group([
         (array) config('backpack.base.web_middleware', 'web'),
     ),
 ], function () {
-    Route::get('resize/{size}/{imagePath}',  [ImageResizesController::class, 'flyResize'])->where('imagePath', '(.*)');
-    Route::get('resizes/{size}/{imagePath}',  [ImageResizesController::class, 'flyResize'])->where('imagePath', '(.*)');
-    Route::get('webp/{size}/{imagePath}',  [ImageResizesController::class, 'webpflyResize'])->where('imagePath', '(.*)');
-    Route::get('/storage/thumbnail/{size}/{id}',  [ImageResizesController::class, 'thumbnails']);
+  
+Route::get('resize/{size}/{imagePath}',  [ImageResizesController::class, 'flyResize'])->where('imagePath', '(.*)');
+Route::get('resizes/{size}/{imagePath}',  [ImageResizesController::class, 'flyResize'])->where('imagePath', '(.*)');
+Route::get('webp/{size}/{imagePath}',  [ImageResizesController::class, 'webpflyResize'])->where('imagePath', '(.*)');
+Route::get('/storage/thumbnail/{size}/{id}',  [ImageResizesController::class, 'thumbnail']);
+Route::get('/storage/thumbnail-link/{size}/{id}',  [ImageResizesController::class, 'link']);
    // Route::get('/storage/thumbnail/{id}-{size}.{ext}',  [ImageController::class, 'thumbnail']);
 });
 

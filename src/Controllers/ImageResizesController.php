@@ -13,11 +13,11 @@ class ImageResizesController
 {
     //
 
-    public function thumbnails($size, $id)
+    public function thumbnail($size, $id)
     {
       $ext = substr($id, strrpos($id, '.') + 1);
       $filename = substr($id, 0 , (strrpos($id, ".")));
-      $config = config('theme8anime.sizes');
+      $config = config('themeanime.sizes');
       $movie = Movie::fromCache()->find($filename);
       $savedPath =  'thumbnail/'.$size . '/' . $filename;
       $savedFile =  $savedPath.'/'.$id;
@@ -42,7 +42,20 @@ class ImageResizesController
               list($width, $height) = getimagesize($imageFullPath);
             }
             $image = Image::make($imageFullPath)->encode($ext, 100)->fit($width, $height)->save(storage_path("app/public/" . $savedFile),100);
-            header('HTTP/1.0 200 OK', 200);
+            //header('HTTP/1.0 200 OK', 200);
+            //$headers = apache_request_headers();
+            //print_r($headers);
+            $timestamp = time();
+            $tsstring = gmdate('D, d M Y H:i:s ', $timestamp) . 'GMT';
+            $etag = md5($timestamp);
+            $seconds_to_cache = 3600;
+            $ts = gmdate("D, d M Y H:i:s", time() + $seconds_to_cache) . " GMT";
+            header("Last-Modified: $tsstring", true);
+            header("ETag: \"{$etag}\"");           
+            header("Expires: $ts");
+            header("Pragma: cache");
+            header("HTTP/1.1 200 OK", true);
+            header("Cache-Control: public, max-age=$seconds_to_cache", true);
            // header('Content-Type:'.mime_content_type($savedFile));
            // header('Content-Length: ' . filesize($savedFile));
             return $image->response();
@@ -55,24 +68,24 @@ class ImageResizesController
     {
       $ext = substr($id, strrpos($id, '.') + 1);
       $filename = substr($id, 0 , (strrpos($id, ".")));
-      $config = config('theme8anime.sizes');
+      $config = config('themeanime.sizes');
+      if (!isset($config[$size])) {
+        abort(404);
+      } 
       $movie = Movie::fromCache()->find($filename);
       $savedPath =  'thumbnail-link/'.$size . '/' . $filename;
       $savedFile =  $savedPath.'/'.$id;
      // $currentMovie->poster_url
-      if (is_null($movie))   abort(404);
+      if (is_null($movie)) abort(404);
         $img = null;
       if($size=='poster'){
         $img =$movie->poster_url;
       }else{
         $img =$movie->thumb_url;
       }
-      if (is_null($img))    abort(404);
+      if (is_null($img)) abort(404);
       try {
-            $imageFullPath = public_path(urldecode($img));
-            if (!file_exists($imageFullPath)|| !isset($config[$size])) {
-              abort(404);
-            }            
+            $imageFullPath = file_get_contents($img);
             $savedDir = dirname($savedPath);
             Storage::disk('public')->put( $savedFile, null);
             list($width, $height) = $config[$size];
