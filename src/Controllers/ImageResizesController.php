@@ -1,6 +1,6 @@
 <?php
 
-namespace Tannhatcms\ImageResize\Controllers;
+namespace Tannhatcms\ImageResizes\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
