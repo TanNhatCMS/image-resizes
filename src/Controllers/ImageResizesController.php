@@ -36,7 +36,7 @@ class ImageResizesController
       try {
          
             $savedDir = dirname($savedPath);
-            Storage::disk('public')->put( $savedFile, null);
+            Storage::disk('public')->put( $savedFile, "");
             list($width, $height) = $config[$size];
             if($width==0 && $height==0){
               list($width, $height) = getimagesize($imageFullPath);
