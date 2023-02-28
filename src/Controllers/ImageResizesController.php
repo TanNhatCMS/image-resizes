@@ -17,7 +17,7 @@ class ImageResizesController
     {
       $ext = substr($id, strrpos($id, '.') + 1);
       $filename = substr($id, 0 , (strrpos($id, ".")));
-      $config = config('themeanime.sizes');
+      $config = config('imageresizes.sizes');
       $movie = Movie::fromCache()->find($filename);
       $savedPath =  'thumbnail/'.$size . '/' . $filename;
       $savedFile =  $savedPath.'/'.$id;
@@ -30,11 +30,11 @@ class ImageResizesController
         $img =$movie->thumb_url;
       }
       if (is_null($img))    abort(404);
+      $imageFullPath = public_path(urldecode($img));
+      if (!file_exists($imageFullPath)) abort(404);     
+      if (!isset($config[$size])) abort(404);  
       try {
-            $imageFullPath = public_path(urldecode($img));
-            if (!file_exists($imageFullPath)|| !isset($config[$size])) {
-              abort(404);
-            }            
+         
             $savedDir = dirname($savedPath);
             Storage::disk('public')->put( $savedFile, null);
             list($width, $height) = $config[$size];
