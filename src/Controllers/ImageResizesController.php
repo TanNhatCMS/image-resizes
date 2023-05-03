@@ -68,7 +68,7 @@ class ImageResizesController
     {
       $ext = substr($id, strrpos($id, '.') + 1);
       $filename = substr($id, 0 , (strrpos($id, ".")));
-      $config = config('themeanime.sizes');
+      $config = config('imageresizes.sizes');
       if (!isset($config[$size])) {
         abort(404);
       } 
@@ -87,7 +87,7 @@ class ImageResizesController
       try {
             $imageFullPath = file_get_contents($img);
             $savedDir = dirname($savedPath);
-            Storage::disk('public')->put( $savedFile, null);
+            Storage::disk('public')->put( $savedFile, "");
             list($width, $height) = $config[$size];
             if($width==0 && $height==0){
               list($width, $height) = getimagesize($imageFullPath);
@@ -106,7 +106,7 @@ class ImageResizesController
     {
         try {
             $imageFullPath = public_path($imagePath);
-            $sizes = config('theme8anime.sizes');
+            $sizes = config('imageresizes.sizes');
             if (!file_exists($imageFullPath)|| !isset($sizes[$size])) {
                 abort(404);
             }
@@ -149,7 +149,7 @@ class ImageResizesController
                 //echo $content;
                 return;
             }
-            Storage::disk('public')->put($savedPath, null);
+            Storage::disk('public')->put($savedPath, "");
             list($width, $height) = $sizes[$size];
             $image = Image::make($imageFullPath)->encode('webp', 100)->resize($width, $height)->save(storage_path("app/public/" . $savedPath),100);
             return $image->response();
