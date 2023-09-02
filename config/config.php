@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'version' => explode('@', \PackageVersions\Versions::getVersion('tannhatcms/image-resizes') ?? 0)[0],
+    'version' => explode('@', \Composer\InstalledVersions::getVersion('tannhatcms/image-resizes') ?? 0)[0],
     'driver' => 'gd',
     'sizes' => [
         'thumb' => [215, 320],
